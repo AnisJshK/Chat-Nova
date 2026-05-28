@@ -57,7 +57,7 @@ function Navbar() {
       <nav className="fixed bottom-0 left-0 right-0 h-16 bg-slate-900 border-t border-slate-800 md:hidden flex justify-around items-center z-20 pb-safe px-4">
         <button 
           onClick={() => navigate('/chats')}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'chats' ? 'text-indigo-400' : 'text-slate-500'
           }`}
         >
@@ -67,7 +67,7 @@ function Navbar() {
         
         <button 
           onClick={() => navigate('/contacts')}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'contacts' ? 'text-indigo-400' : 'text-slate-500'
           }`}
         >
@@ -77,7 +77,7 @@ function Navbar() {
         
         <button 
           onClick={() => navigate('/settings')}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'settings' ? 'text-indigo-400' : 'text-slate-500'
           }`}
         >

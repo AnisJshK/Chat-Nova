@@ -1,43 +1,34 @@
-import React from 'react'
-import {mockContacts} from '../assets/dummydata'
+import React from "react";
+import { mockContacts } from "../assets/dummydata";
+import { MailIcon, User, UserIcon } from "lucide-react";
 
-// const mockContacts = [
-//   {
-//     uid: "firebase_user_uid_002",
-//     name: "Alice Smith",
-//     email: "alice@fuzzie.app",
-//     status: "online",
-//     customStatus: "Coding away... 🚀"
-//   },
-//   {
-//     uid: "firebase_user_uid_003",
-//     name: "Charlie Brown",
-//     email: "charlie@fuzzie.app",
-//     status: "offline",
-//     customStatus: "Out for lunch"
-//   },
-//   {
-//     uid: "firebase_user_uid_004",
-//     name: "Dana Scully",
-//     email: "dana@fuzzie.app",
-//     status: "online",
-//     customStatus: "The truth is out there"
-//   }
-// ];
 const ContactsPanel = () => {
-
   return (
-    <div>
-      {mockContacts.map((contact)=>(
-        <div key={contact.uid} className='text-white'>
-          <span className='text-2xl'>{contact.name}</span>
-          <p className='text-xs'>{contact.email}</p>
-          <p className='text-xs'>{contact.status}</p>
-          <p className='text-xs'>{contact.customStatus}</p>
-        </div>
-      ))}
+    <div className="w-screen h-screen flex">
+      <div className="flex flex-col p-2 gap-2 m-2 w-full h-auto">
+        {mockContacts.map((contact) => (
+          <div
+            key={contact.uid}
+            className="text-white gap-2 m-2 h-auto w-full rounded-full shadow-lg  bg-indigo-500/10 hover:bg-indigo-300/10 cursor-pointer"
+          >
+            <div className="flex flex-1 flex-col p-2 justify-center left-2">
+              <div className="flex gap-2 m-2">
+                <span className="flex items-center gap-2 px-2 text-xl">
+                  <User size={20} color="white" />
+                  {contact.name}
+                </span>
+              </div>
+              <div className="text-xs flex px-6 gap-4">
+                <p className="flex items-center px-2 gap-2 hover:text-gray-400"><MailIcon size={10}/> {contact.email}</p>●
+                <p className="">{contact.status}</p>●
+                <p className="">{contact.customStatus}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ContactsPanel
+export default ContactsPanel;
