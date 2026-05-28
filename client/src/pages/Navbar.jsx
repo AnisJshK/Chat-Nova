@@ -15,8 +15,9 @@ function Navbar() {
       <aside className="hidden md:flex flex-col items-center justify-between w-20 bg-slate-900 border-r border-slate-800 py-6 z-10 h-screen">
         <div className="flex flex-col items-center gap-8 w-full">
           {/* App Logo Indicator */}
-          <div className="h-20 w-20 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30">
+          <div className="h-20 w-20 rounded-xl flex items-center justify-center font-bold text-xl shadow-lg shadow-indigo-600/30 cursor-pointer" onClick={()=>navigate('/')}>
             <img src={CNovaIcon} alt="" />
+            
           </div>
           
           {/* Navigation Items */}
