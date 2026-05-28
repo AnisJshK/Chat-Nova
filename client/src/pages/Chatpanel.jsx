@@ -27,7 +27,9 @@ const Chatpanel = () => {
       <aside className="w-96 h-full bg-indigo-600 flex flex-col p-4 m-2 rounded-2xl shrink-0 shadow-2xl">
         <div className="text-white text-2xl font-bold mb-4 px-2 flex justify-between items-center">
           <span>Chats</span>
-         
+          <span className="text-xs bg-indigo-500 px-2.5 py-1 rounded-full font-normal">
+            Beta View
+          </span>
         </div>
 
         <div className="flex flex-col gap-3 overflow-y-auto pr-1 flex-1">
@@ -53,7 +55,6 @@ const Chatpanel = () => {
                     </span>
                   )}
                 </div>
-
                 <div className="flex items-center justify-between gap-3 generic-card-row">
                   <p className="text-sm truncate opacity-75 flex-1">
                     <span className="font-medium">{room.lastMessage.senderName}:</span>{" "}
