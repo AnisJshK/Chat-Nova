@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { MessageSquare, Users, Settings } from 'lucide-react';
 import CNovaIcon from '../assets/ChatNova1.png'
 import { useNavigate } from 'react-router-dom';
+import { useClerk, UserButton, useUser } from '@clerk/clerk-react';
+
 
 function Navbar() {
   const [activeTab, setActiveTab] = useState('chats');
   const navigate = useNavigate();
+  const {user} = useUser();
+  const {openSignIn} = useClerk();
   // Helper to sync local state and bubble the change up to your main App container
   
 
@@ -75,15 +79,17 @@ function Navbar() {
           <span className="text-[10px] font-medium tracking-wide">Contacts</span>
         </button>
         
-        <button 
-          onClick={() => navigate('/settings')}
-          className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            activeTab === 'settings' ? 'text-indigo-400' : 'text-slate-500'
-          }`}
-        >
-          <Settings className="h-5 w-5" />
-          <span className="text-[10px] font-medium tracking-wide">Settings</span>
-        </button>
+        <div className='flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer'>
+        {!user ? navigate('/')
+        : (
+          <UserButton>
+            
+          </UserButton>
+        )  
+      }
+            
+        </div>
+        
       </nav>
     </>
   );

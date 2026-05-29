@@ -1,9 +1,13 @@
+import { useUser } from '@clerk/clerk-react';
 import { MessageCircle, Lock, Layers, Smartphone, Mail, ArrowRight, Zap, Shield, Users } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
   const navigate = useNavigate();
-
+  const {user} = useUser();
+  if(user){
+    return <Navigate to={"/chats"} replace />
+  }
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black text-gray-100 overflow-x-hidden">
 
