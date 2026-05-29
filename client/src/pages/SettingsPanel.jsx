@@ -2,7 +2,10 @@ import React from 'react'
 
 const SettingsPanel = () => {
   return (
-    <div>SettingsPanel</div>
+    <div>
+      
+      
+    </div>
   )
 }
 
