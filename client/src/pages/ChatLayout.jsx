@@ -40,10 +40,7 @@ const ChatLayout = () => {
               Messages
             </span>
           </div>
-          <span className="text-[10px] font-medium uppercase tracking-widest
-                           bg-white/10 text-white/50 px-2.5 py-1 rounded-full">
-            Beta
-          </span>
+         
         </div>
 
         {/* search */}

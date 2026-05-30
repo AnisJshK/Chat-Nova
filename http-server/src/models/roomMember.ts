@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const roomMemberSchema = new mongoose.Schema({
     userId:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'User',
         required:true
     },
@@ -15,6 +15,6 @@ const roomMemberSchema = new mongoose.Schema({
         type:Date,
         default:null
     }
-},{timestamps:{createdAt:'joinedAt',updatedAt:false}});
+},{timestamps:true});
 
 export const roomMemberModel = mongoose.model('RoomMember',roomMemberSchema)

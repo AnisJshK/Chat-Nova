@@ -47,14 +47,16 @@ function Navbar() {
         </div>
 
         {/* Global Settings Trigger */}
-        <button 
-          onClick={() => {navigate('/settings'),setActiveTab('settings')}}
-          className={`p-3 rounded-xl flex items-center justify-center transition-all ${
-            activeTab === 'settings' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-          }`}
-        >
-          <Settings className="h-5 w-5" />
-        </button>
+         <div className='flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all cursor-pointer'>
+        {!user ? navigate('/')
+        : (
+          <UserButton>
+            
+          </UserButton>
+        )  
+      }
+      </div>
+        
       </aside>
 
       {/* 2. MOBILE BOTTOM NAVBAR */}
