@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
-import { Search, MessageSquare } from "lucide-react";
+import { Search, MessageSquare, PlusIcon } from "lucide-react";
 import { mockRooms } from "../assets/dummydata";
 
 const AVATAR_PALETTES = [
@@ -39,6 +39,10 @@ const ChatLayout = () => {
             <span className="text-[17px] font-semibold text-white tracking-tight">
               Messages
             </span>
+          </div>
+
+          <div className="flex items-center justify-between border rounded-2xl p-1 m-1 hover:bg-indigo-600/10 text-sm cursor-pointer shadow-lg z-40 " onClick={()=>{}}>
+           <PlusIcon className="h-5 w-5 p-0.5 m-0.5"/>  <p className="p-0.5 m-0.5 right-2.5">New</p>
           </div>
          
         </div>
