@@ -1,6 +1,8 @@
 import express from 'express'
 import connectDB from './config/db.js';
 import dotenv from 'dotenv'
+import userRouter from './routes/UserRoutes.js';
+import webhookRouter from './routes/webhookRoutes.js';
 
 
 const app = express();
@@ -10,12 +12,8 @@ dotenv.config()
 await connectDB()
 
 
-app.post('/test',(req,res)=>{
-    res.json({
-        message:"This is working right now"
-    })
-})
-
+app.use('/api/webhooks',webhookRouter)
+app.use('/api/users',userRouter);
 
 app.listen(PORT,()=>{
     console.log(`http-server running on http://localhost:${PORT}`)
