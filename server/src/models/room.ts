@@ -14,7 +14,7 @@ const RoomSchema = new Schema(
     },
 
     createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "User",
     },
 

@@ -11,5 +11,6 @@ export const requireAuth = (req:Request,res:Response,next:NextFunction)=>{
         });
     }
     (req as any).clerkId = auth.userId;
+    (req as any).user = { id: auth.userId };
     next()   
 }

@@ -9,7 +9,7 @@ const messageSchema = new mongoose.Schema(
     },
 
     senderId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: "User",
       required: true,
     },
@@ -33,4 +33,5 @@ const messageSchema = new mongoose.Schema(
 
 messageSchema.index({ roomId: 1, createdAt: -1 });
 
-export const Message = mongoose.model("Message", messageSchema);
+const Message = mongoose.model("Message", messageSchema);
+export default Message
