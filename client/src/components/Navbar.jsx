@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { MessageSquare, Users } from 'lucide-react';
-import CNovaIcon from '../assets/ChatNova1.png'
+import CNovaIcon from '../assets/Chatnova1.png'
 import { useNavigate } from 'react-router-dom';
 import {  UserButton, useUser } from '@clerk/clerk-react';
 
