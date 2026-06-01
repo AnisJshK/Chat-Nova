@@ -1,15 +1,14 @@
-import React, { useState } from 'react';
-import { MessageSquare, Users, Settings } from 'lucide-react';
+import { useState } from 'react';
+import { MessageSquare, Users } from 'lucide-react';
 import CNovaIcon from '../assets/ChatNova1.png'
 import { useNavigate } from 'react-router-dom';
-import { useClerk, UserButton, useUser } from '@clerk/clerk-react';
+import {  UserButton, useUser } from '@clerk/clerk-react';
 
 
 function Navbar() {
   const [activeTab, setActiveTab] = useState('chats');
   const navigate = useNavigate();
   const {user} = useUser();
-  const {openSignIn} = useClerk();
   // Helper to sync local state and bubble the change up to your main App container
   
 

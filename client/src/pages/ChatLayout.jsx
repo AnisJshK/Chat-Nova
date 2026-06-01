@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
 import { Search, MessageSquare, PlusIcon, X } from "lucide-react";
 import { useAppContext } from "../context/AppContext";

@@ -1,6 +1,4 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Navbar from "./components/Navbar";
 import Chatpanel from "./pages/Chatpanel";
 import ContactsPanel from "./pages/ContactsPanel";
 import ChatLayout from "./pages/ChatLayout";
