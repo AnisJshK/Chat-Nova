@@ -1,37 +1,44 @@
-import mongoose from "mongoose";
+// models/message.ts
+import mongoose, { Schema, Document } from "mongoose";
 
-const messageSchema = new mongoose.Schema(
+// Define an explicit interface for TypeScript support
+export interface IMessage extends Document {
+  roomId: mongoose.Types.ObjectId | string;
+  senderId: string;
+  senderName: string; // <-- CRUCIAL: Add this field definition
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const MessageSchema = new Schema<IMessage>(
   {
+    roomId: {
+      type: Schema.Types.ObjectId,
+      ref: "Room",
+      required: true,
+    },
+    senderId: {
+      type: String, // Clerk string ID
+      required: true,
+    },
+    senderName: {
+      type: String, // <-- CRUCIAL: Add this to your database schema map
+      required: true,
+      default: "Anonymous"
+    },
     content: {
       type: String,
       required: true,
       trim: true,
     },
-
-    senderId: {
-      type: String,
-      ref: "User",
-      required: true,
-    },
-
-    roomId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Room",
-      required: true,
-    },
-
-    status: {
-      type: String,
-      enum: ["SENT", "DELIVERED", "READ"],
-      default: "SENT",
-    },
   },
   {
-    timestamps: true,
+    timestamps: true, // Automatically manages createdAt and updatedAt fields
   }
 );
 
-messageSchema.index({ roomId: 1, createdAt: -1 });
+// Prevent model recompilation errors during hot-reloads
+const Message = mongoose.models.Message || mongoose.model<IMessage>("Message", MessageSchema);
 
-const Message = mongoose.model("Message", messageSchema);
-export default Message
+export default Message;

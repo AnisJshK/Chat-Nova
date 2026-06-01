@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { roomMemberModel } from "../models/roomMember.js";
+import mongoose from "mongoose"; // 1. CRUCIAL: Make sure to import mongoose
 import Room from "../models/room.js";
 
 interface AuthenticatedRequest extends Request {
@@ -66,3 +67,49 @@ export const createRoom = async(req:Request,res:Response) => {
         })
     }
 }
+
+// backend controller adjustment
+export const joinRoom = async (req: Request, res: Response) => {
+    try {
+        // 1. Force TypeScript to know roomId is definitely a string
+        const roomId = req.params.roomId as string;
+        const userId = (req as any).user?.id;
+
+        // Extra guard: if for some crazy reason roomId is missing or an array runtime leak happens
+        if (!roomId || typeof roomId !== "string") {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid room parameter structure."
+            });
+        }
+
+        // 2. TypeScript will now compile this cleanly!
+        if (!mongoose.Types.ObjectId.isValid(roomId)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "Malformed Room Hex Identity Key structure." 
+            });
+        }
+        
+        // ✅ No more overload assignment mismatch errors here either
+        const mongoRoomId = new mongoose.Types.ObjectId(roomId);
+
+        const targetRoom = await Room.findById(mongoRoomId);
+        if (!targetRoom) {
+            return res.status(404).json({ success: false, message: "Room registry key not found" });
+        }
+
+        const existingMember = await roomMemberModel.findOne({ userId, roomId: mongoRoomId });
+        if (!existingMember) {
+            await roomMemberModel.create({ userId, roomId: mongoRoomId });
+        }
+
+        return res.status(200).json({ 
+            success: true, 
+            room: targetRoom 
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: "Internal error" });
+    }
+};

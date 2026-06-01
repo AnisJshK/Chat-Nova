@@ -6,5 +6,6 @@ const roomRoutes = express.Router();
 
 roomRoutes.post('/createRoom',requireAuth,createRoom);
 roomRoutes.get('/getRooms',requireAuth,getUserRooms);
+roomRoutes.get('/:roomId/join',requireAuth,getUserRooms);
 
 export default roomRoutes;

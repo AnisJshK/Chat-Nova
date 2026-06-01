@@ -25,7 +25,7 @@ app.use(clerkMiddleware())
 app.use("/api/webhooks", webhookRouter);
 app.use("/api/users", userRouter);
 app.use("/api/rooms", roomRoutes);
-app.use("/api/rooms", messageRouter);
+app.use("/api/messages", messageRouter);
 
 const server = http.createServer(app);
 
