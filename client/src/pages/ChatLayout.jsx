@@ -114,9 +114,13 @@ const ChatLayout = () => {
         navigate(`/chats/${cleanId}`);
       }
     } catch (error) {
-      console.error("Failed to join room by ID:", error);
-      alert("Invalid Room ID or server connection issue.");
-    } finally {
+  const msg = error?.response?.data?.message 
+    || error?.response?.statusText 
+    || error?.message 
+    || "Unknown error";
+  const status = error?.response?.status || "N/A";
+  alert(`Join failed [${status}]: ${msg}`);
+} finally {
       setLoading(false);
     }
   };
