@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate, Outlet } from "react-router-dom";
-import { Search, MessageSquare, PlusIcon } from "lucide-react";
+import { Search, MessageSquare, PlusIcon, X } from "lucide-react";
 import { mockRooms } from "../assets/dummydata";
+import { useAppContext } from "../context/AppContext";
 
 const AVATAR_PALETTES = [
   { bg: "bg-indigo-950",  text: "text-indigo-300" },
@@ -21,8 +22,43 @@ function getInitials(name = "") {
 }
 
 const ChatLayout = () => {
+
   const { roomId } = useParams();
   const navigate = useNavigate();
+
+  const {rooms,getToken,axios,setRooms} = useAppContext();
+
+  const [isModalOpen,setIsModalOpen] = useState(false);
+  const [roomName,setRoomName] = useState("");
+  const [loading,setLoading] = useState(false);
+
+  const handleCreateRooms = async(e)=>{
+    e.preventDefault();
+    if(!roomName.trim())return;
+    setLoading(true);
+    try {
+      
+      const {data} = await axios.post("/api/rooms/createRoom",{
+        name:roomName,isGroup:false
+      },{
+        headers:{
+          Authorization:`Bearer ${ await getToken()}`
+        }
+      })
+      const newRoomObject = {
+        _id:data._id,
+        name:data.name,
+        isGroup:data.isGroup,
+        lastMessage:null,
+        unreadCount:0,
+        online:false
+      };
+      setRooms((prevRooms)=>[newRoomObject,...prevRooms]);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to create room: ",error)
+    }
+  }
 
   return (
     <div className="h-screen w-full flex bg-[#080910] overflow-hidden font-sans">
@@ -41,7 +77,7 @@ const ChatLayout = () => {
             </span>
           </div>
 
-          <div className="flex items-center justify-between border rounded-2xl p-1 m-1 hover:bg-indigo-600/10 text-sm cursor-pointer shadow-lg z-40 " onClick={()=>{}}>
+          <div className="flex items-center justify-between border rounded-2xl p-1 m-1 hover:bg-indigo-600/10 text-sm cursor-pointer shadow-lg z-40 " onClick={()=>setIsModalOpen(true)}>
            <PlusIcon className="h-5 w-5 p-0.5 m-0.5"/>  <p className="p-0.5 m-0.5 right-2.5">New</p>
           </div>
          
@@ -58,15 +94,17 @@ const ChatLayout = () => {
         {/* room list */}
         <div className="flex-1 overflow-y-auto flex flex-col gap-1 pr-0.5
                         scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
-          {mockRooms.map((room, idx) => {
-            const isActive = roomId === room.id;
+          {rooms && rooms.map((room, idx) => {
+            const isActive = roomId === room._id;
             const palette  = AVATAR_PALETTES[idx % AVATAR_PALETTES.length];
             const initials = getInitials(room.name);
-
+            const messageTime = room.lastMessage?.createdAt
+            ? new Date(room.lastMessage.createdAt).toLocaleString([],{hour:'2-digit',minute:'2-digit'})
+            : "";
             return (
               <div
-                key={room.id}
-                onClick={() => navigate(`/chats/${room.id}`)}
+                key={room._id}
+                onClick={() => navigate(`/chats/${room._id}`)}
                 style={{ animationDelay: `${idx * 50}ms` }}
                 className={`
                   group flex items-center gap-2.5 p-2.5 rounded-xl cursor-pointer
@@ -102,14 +140,23 @@ const ChatLayout = () => {
                       {room.name}
                     </span>
                     <span className="text-[11px] text-white/30 font-mono shrink-0 ml-1.5">
-                      {room.lastMessage.createdAt}
+                      {messageTime}
                     </span>
                   </div>
                   <p className="text-[12px] text-white/40 truncate">
-                    <span className="font-medium text-white/55">
+                  {room.lastMessage?.content?(
+                    <>
+                     <span className="font-medium text-white/55">
                       {room.lastMessage.senderName}:
                     </span>{" "}
                     {room.lastMessage.content}
+                    </>
+                  ):(
+                    <>
+                    <span className="italic text-white/20">No messages yet</span>
+                    </>
+                  )}
+                   
                   </p>
                 </div>
 
@@ -133,6 +180,56 @@ const ChatLayout = () => {
         <Outlet />
       </main>
 
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center animate-[fadeIn_0.2s_ease-out]">
+          <div className="bg-[#120e47] border border-white/10 rounded-2xl w-full max-w-md p-6 shadow-2xl m-4 relative animate-[scaleUp_0.2s_ease-out]">
+            
+            {/* Close Button */}
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+            >
+              <X size={18} />
+            </button>
+
+            <h3 className="text-xl font-semibold text-white mb-2">Create New Chat Room</h3>
+            <p className="text-sm text-white/60 mb-6">Enter a name below to start a new chat workspace.</p>
+
+            <form onSubmit={handleCreateRooms} className="space-y-4">
+              <div>
+                <label className="block text-xs font-medium text-indigo-300 uppercase tracking-wider mb-2">
+                  Room Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={roomName}
+                  onChange={(e) => setRoomName(e.target.value)}
+                  placeholder="e.g., Development Team, Book Club..."
+                  className="w-full bg-black/35 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/20 text-sm focus:outline-none focus:border-indigo-500 transition-colors"
+                />
+              </div>
+
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2.5 rounded-xl border border-white/10 text-white/70 hover:text-white hover:bg-white/5 transition-all text-sm font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading || !roomName.trim()}
+                  className="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-medium transition-all shadow-lg shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? "Creating..." : "Create Room"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
       {/* keyframe helpers (Tailwind JIT arbitrary) */}
       <style>{`
         @keyframes slideIn   { from { opacity:0; transform:translateX(-8px); } to { opacity:1; transform:translateX(0); } }

@@ -10,12 +10,14 @@ import SignUpPage from "./components/SignUpPage";
 import HomePage from "./pages/homePage";
 import Layout from "./components/Layout";
 import { useUser } from "@clerk/clerk-react";
+import { AppProvider } from "./context/AppProvider";
 
 const App = () => {
   const { user } = useUser();
   return (
     <BrowserRouter>
-    
+    <AppProvider>
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/sign-in/*" element={<SignInPage />} />
@@ -33,6 +35,7 @@ const App = () => {
           </Route>
         </Routes>
 
+    </AppProvider>
     </BrowserRouter>
   );
 };

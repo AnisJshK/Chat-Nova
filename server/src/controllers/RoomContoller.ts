@@ -10,7 +10,13 @@ interface AuthenticatedRequest extends Request {
 
 export const getUserRooms =  async(req:Request,res:Response) =>{
     try {
-         const userId = req.params.userId;
+         const userId = (req as any).user?.id;
+         if(!userId){
+            return res.status(401).json({
+                success:false,
+                message:"Unauthorized: Missing user context"
+            })
+         }
 
     const memberShips = await roomMemberModel.find({userId}).populate("roomId");
 
@@ -30,10 +36,10 @@ export const getUserRooms =  async(req:Request,res:Response) =>{
     }
 }
 
-export const createRoom = async(req:AuthenticatedRequest,res:Response) => {
+export const createRoom = async(req:Request,res:Response) => {
     try {
         const {name,isGroup} = req.body;
-        const userId = req.user?.id;
+        const userId = (req as any).user?.id;
 
         if(!userId){
             return res.status(401).json({

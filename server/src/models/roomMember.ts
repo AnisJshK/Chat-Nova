@@ -11,9 +11,9 @@ const roomMemberSchema = new mongoose.Schema({
         ref:"Room",
         required:true
     },
-    lastReadAt:{
-        type:Date,
-        default:null
+    unreadCount:{
+        type:Number,
+        default:0
     }
 },{timestamps:true});
 

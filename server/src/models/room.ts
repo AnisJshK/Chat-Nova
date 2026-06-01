@@ -19,8 +19,9 @@ const RoomSchema = new Schema(
     },
 
     lastMessageAt: {
-      type: Date,
-      default: Date.now,
+      content:{type:String,default:""},
+      senderName:{type:String,default:""},
+      createdAt:{type:Date,default:Date.now}
     },
   },
   {
