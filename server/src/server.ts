@@ -22,6 +22,12 @@ await connectDB();
 
 app.use(clerkMiddleware())
 
+
+app.get("/",async(req,res)=>{
+    res.send('Server is Live!')
+})
+
+
 app.use("/api/webhooks", webhookRouter);
 app.use("/api/users", userRouter);
 app.use("/api/rooms", roomRoutes);
