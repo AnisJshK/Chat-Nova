@@ -35,5 +35,10 @@
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3"
+  },
+  "allowScripts": {
+    "@clerk/shared@4.14.0": true,
+    "esbuild@0.28.0": true,
+    "protobufjs@7.6.1": true
   }
 }
